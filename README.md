@@ -30,9 +30,11 @@ If you want to run the preprocessing yourself, you can download the original dat
 - NCI-ISBI: containing the DICOMS in directories TRAIN, LEADERBOARD, TEST.
 - NNRD: containing nnrd files in directories Training, Leaderboard, Test.
 
-then you should activate the enviroment using the enviroment.yml file
+then you should create the enviroment using the enviroment.yml file
 
-
+'''conda env create --file environment.yml
+and then activate the enviroment
+'''conda activate new_mri2
 
 
 # Regenerating the results 
