@@ -42,7 +42,7 @@ and then activate the enviroment
 ```
 conda activate new_mri2
 ```
-in the file ```data.py```` enable the functions:
+in the file ```data.py``` enable the functions:
 ```
 create_data() # to create the train/valid pickles
 apply_histogram_equalisation_to_dataset(train, valid, test) # to apply equalization and create the heq_train/valid pickles
