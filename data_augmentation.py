@@ -123,12 +123,11 @@ def sample_with_p(p):
 
 def get_random_perturbation(voxels, lbls):
     # Generate a random perturbation of the input feature + label
-    # original p - 0.6 for all
     p_rotate = 0.6
     p_scale = 0.6
     p_gray = 0.6
     p_deform = 0.6
-    p_intense = 0.6
+    p_intense = 0.6 # 0 to generate original data
     new_voxels, new_lbls = voxels, lbls
     if sample_with_p(p_rotate):
         new_voxels, new_lbls = rotate(new_voxels, new_lbls)
@@ -178,6 +177,11 @@ def plot_augmentation(img_org, ann_org, img_aug, ann_aug, title_aug='Augmented',
 
 
 def show_augmentation(train):
+    '''
+    showing examples of the augmentations
+    :param train:
+    :return:
+    '''
     img_id = 12
     slice_id = 8
 
@@ -206,6 +210,4 @@ def show_augmentation(train):
 
     # new augmentation intensity shift
     imgs_aug, anns_aug = intensity_shift(imgs_org, anns_org)
-    # plot_augmentation(img_org, ann_org, imgs_aug[:, :, slice_id, 0], anns_aug[:, :, slice_id, 0],
-    #                   title_aug='Intensity shift')
     plot_augmentation(img_org, [], imgs_aug[:, :, slice_id], [], title_aug='Intensity shift')

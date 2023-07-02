@@ -23,8 +23,8 @@ from tqdm import tqdm
 from collections import Counter
 from data_augmentation import *
 from utils import *
-from data import multi_slice_viewer, multi_slice_viewer_with_gif
-from visualization import make_gif
+
+from visualization import *
 # from tensorflow.python.framework import ops
 # Creatig the Unet class - section 5
 
@@ -216,8 +216,6 @@ class UNetwork():
             #     self.train_op = self.trainer.minimize(self.loss)
 
 
-# simpleUNet = False    changed it and it is defualt argument in init of UNetwork
-
 
 def get_data_raw(data, i, batch_size):
     # Return separated x,y data from the i-th batch with the given batch size (batch_size)
@@ -264,6 +262,14 @@ def pre_process_data(train, valid, augment_len=10):
     return train_run, valid_run
 
 def create_model_dir(save_path, logs_path, hist_path, res_path):
+    '''
+    creating the relevant dirs for the run
+    :param save_path:
+    :param logs_path:
+    :param hist_path:
+    :param res_path:
+    :return:
+    '''
     print('--------- creating dirs -----------------')
 
     if not os.path.exists(save_path):
@@ -278,6 +284,12 @@ def create_model_dir(save_path, logs_path, hist_path, res_path):
 
 
 def visualize_training_history(model_name,hist_path):
+    '''
+    showing the loss and iou plots of the run, and outputing more info
+    :param model_name:
+    :param hist_path:
+    :return:
+    '''
     print('--------- Visualizing Training -----------------')
 
     print('Showing history')
@@ -324,6 +336,16 @@ def inference(test,
               save_path,
               batch_size,
               res_path):
+    '''
+    running inference on the test set, saving the output and creating gif of the results.
+    :param test:
+    :param unet:
+    :param model_name:
+    :param save_path:
+    :param batch_size:
+    :param res_path:
+    :return:
+    '''
     print('----------------- Inference --------------------')
 
     # unet = UNetwork(drop=dropout, base_filt=base_filt, should_pad=True)
@@ -396,28 +418,18 @@ def inference(test,
     print("Best prediction on the test scan: ", best_pred_image_id)
     print("Worst prediction on the test scan: ", worst_pred_image_id)
 
-    # 7.1.1 best predictions
-    # img_id = 3
+    #best predictions
     best_x_cur = x_orig[best_pred_image_id]
     best_y_cur = y_orig[best_pred_image_id]
     best_y_upscale = upscale_segmentation(swap_axes(pred_out[best_pred_image_id][:, :, :, np.newaxis]), np.shape(best_x_cur))
     # multi_slice_viewer(best_x_cur, best_y_cur, best_y_upscale)  # View  images, labels and predictions together
     make_gif(model_name, res_path, 'Best', best_x_cur, best_y_cur, best_y_upscale)
-    # 7.1.2 worst prediction
-    # img_id = 6
+    # worst prediction
     worst_x_cur = x_orig[worst_pred_image_id]
     worst_y_cur = y_orig[worst_pred_image_id]
     worst_y_upscale = upscale_segmentation(swap_axes(pred_out[worst_pred_image_id][:, :, :, np.newaxis]), np.shape(worst_x_cur))
-    # multi_slice_viewer(worst_x_cur, worst_y_cur, worst_y_upscale)  # View  images, labels and predictions together
+    # multi_slice_viewer(worst_x_cur, worst_y_cur, worst_y_upscale)  # View  images, labels and predictions together - works only in notebook
     make_gif(model_name, res_path, 'Worst', worst_x_cur, worst_y_cur, worst_y_upscale)
-
-    print('Shapes of res: ')
-    print(best_x_cur.shape)
-    print(best_y_cur.shape)
-    print(best_y_upscale.shape)
-    print(worst_x_cur.shape)
-    print(worst_y_cur.shape)
-    print(worst_y_upscale.shape)
 
 
     pickle.dump(file=open(res_path + 'best_x_cur.pickle', 'wb'), obj=best_x_cur)
@@ -448,6 +460,28 @@ def train_model(train_run,
                 res_path,
                 save_each,
                 load_model=True):
+    '''
+    training with the chosen parametes. inference is inside.
+    :param train_run:
+    :param valid_run:
+    :param test:
+    :param valid:
+    :param lr:
+    :param dropout:
+    :param base_filt:
+    :param batch_size:
+    :param patience:
+    :param num_epochs:
+    :param num_iter:
+    :param model_name:
+    :param save_path:
+    :param logs_path:
+    :param hist_path:
+    :param res_path:
+    :param save_each:
+    :param load_model:
+    :return:
+    '''
 
     print('--------- Starting to Train --------------------')
 
@@ -547,10 +581,7 @@ def train_model(train_run,
                 saver.save(sess, save_path + model_name + '-final', global_step=e)
                 break
 
-    # The trace below is just an example
-
     # Save training history
-    # final_hist_path = hist_path + model_name + '-final' + '.npz'
     final_model_name = model_name + '-final-' + str(e)
 
     np.savez(hist_path + final_model_name + '.npz', train_losses=train_losses, val_losses=val_losses,
@@ -601,11 +632,6 @@ def main():
     train_model(train_run, valid_run, test, valid, LEARNING_RATE, DROPOUT, BASE_FILT, BATCH_SIZE, PATIENCE, NUM_EPOCHS,
                 NUM_ITER, MODEL_NAME, NET_PATH, LOGS_PATH, HIST_PATH, RES_PATH, save_each=5)
 
-
-
-    # visualize_training_history(MODEL_NAME, HIST_PATH, e=2)
-
-    # inference(test, MODEL_NAME, SAVE_PATH, DROPOUT, BASE_FILT, BATCH_SIZE, e=2)
 
 
 

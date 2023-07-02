@@ -35,6 +35,12 @@ np.random.seed(37) # for reproducibility
 
 
 def return_dcm(file_path, check_term='Prostate'):
+    """
+    return all the DICOM files in the parent dir
+    :param file_path: the parent dir with DICOMS
+    :param check_term: term that all the relevant files have
+    :return: all the relevant dicom files
+    """
     # Read all DCM (slices) files within a directory and order the files based on filename
     out_dcm = {}
     for dirName, subdirList, fileList in os.walk(file_path):
@@ -62,7 +68,11 @@ def return_dcm(file_path, check_term='Prostate'):
 
 
 def return_nrrd(file_path):
-    # Read all NRRD (annotation) files within a directory
+    '''
+    Read all NRRD (annotation) files within a directory
+    :param file_path: nrrd parent dir
+    :return: relevant nrrd files
+    '''
     out_nrrd = {}
     for dirName, subdirList, fileList in os.walk(file_path):
         for filename in fileList:
@@ -74,7 +84,12 @@ def return_nrrd(file_path):
 
 
 def get_dataset(data_dir, anns_dir):
-    # Match DCM volumes with corresponding annotation files
+    '''
+    Match DCM volumes with corresponding annotation files
+    :param data_dir: parent dicom dir
+    :param anns_dir: parent nrrd dir
+    :return:
+    '''
     data_out = []
     shapes = {}
     d_dcm = return_dcm(data_dir)
@@ -110,91 +125,13 @@ def get_dataset(data_dir, anns_dir):
     return data_out
 
 
-def plot_slice(slice_in, is_anns=False, num_anns=4):
-    # Plot a slice of data - can either be raw image data or corresponding annotation
-    slice_in = np.squeeze(slice_in)
-    plt.figure()
-    plt.set_cmap(plt.bone())
-    if is_anns:
-        plt.pcolormesh(slice_in, vmin=0, vmax=num_anns - 1)
-    else:
-        plt.pcolormesh(slice_in)
-    plt.show()
-
-
-
-def multi_slice_viewer(feats, anns = None, preds = None, num_classes = 4, no_axis=False):
-    # Plot feats, anns, predictions in multi-slice-view
-    # feats OR feats + anns OR feats + anns + preds
-    # only works in notebook
-    if anns is None:
-        fig, ax = plt.subplots()
-        ax.volume = feats
-        ax.index = feats.shape[-1] // 2
-        ax.imshow(feats[:, :, ax.index],  cmap='bone')
-        fig.canvas.mpl_connect('key_press_event', process_key)
-    else:
-        if preds is None:
-            fig, axarr = plt.subplots(1, 2)
-            plt.tight_layout()
-            axarr[0].volume = feats
-            axarr[0].index = 0
-            axarr[0].imshow(feats[:, :, axarr[0].index],  cmap='bone')
-            axarr[0].set_title('Scans')
-            axarr[1].volume = anns
-            axarr[1].index = 0
-            axarr[1].imshow(anns[:, :, axarr[1].index],  cmap='bone', vmin = 0, vmax = num_classes)
-            axarr[1].set_title('Annotations')
-            fig.canvas.mpl_connect('key_press_event', process_key)
-        else:
-            fig, axarr = plt.subplots(1, 3)
-            plt.tight_layout()
-            axarr[0].volume = feats
-            axarr[0].index = 0
-            axarr[0].imshow(feats[:, :, axarr[0].index],  cmap='bone')
-            axarr[0].set_title('Scans')
-            axarr[1].volume = anns
-            axarr[1].index = 0
-            axarr[1].imshow(anns[:, :, axarr[1].index],  cmap='bone', vmin = 0, vmax = num_classes)
-            axarr[1].set_title('Annotations')
-            axarr[2].volume = preds
-            axarr[2].index = 0
-            axarr[2].imshow(preds[:, :, axarr[2].index],  cmap='bone', vmin = 0, vmax = num_classes)
-            axarr[2].set_title('Predictions')
-            fig.canvas.mpl_connect('key_press_event', process_key)
-        if no_axis:
-            for a in axarr:
-                a.set_axis_off()
-
-
-
-
-def process_key(event):
-    # Process key_press events
-    fig = event.canvas.figure
-    if event.key == 'j':
-        for ax in fig.axes:
-            previous_slice(ax)
-    elif event.key == 'k':
-        for ax in fig.axes:
-            next_slice(ax)
-    fig.canvas.draw()
-
-
-def previous_slice(ax):
-    # Go to the previous slice
-    volume = ax.volume
-    ax.index = (ax.index - 1) % volume.shape[-1]  # wrap around using %
-    ax.images[0].set_array(volume[:, :, ax.index])
-
-
-def next_slice(ax):
-    # Go to the next slice
-    volume = ax.volume
-    ax.index = (ax.index + 1) % volume.shape[-1]
-    ax.images[0].set_array(volume[:, :, ax.index])
-
 def create_data():
+    '''
+    main function that creates the data out of the dirs downloaded.
+    make sure your dirs are the same, or change the path here.
+    saves pickle files with the extracted data.
+    :return:
+    '''
     # .dcm data files
     data_train_dir = '/home/student/Mor_MRI/NCI-ISBI/TRAIN/'
     data_leader_dir = '/home/student/Mor_MRI/NCI-ISBI/LEADERBOARD/'
@@ -221,30 +158,13 @@ def create_data():
     print("Sample 3D scans' shapes:", train[2][0].shape, valid[1][0].shape,
           test[9][0].shape)  # as we can see these shapes vary
 
-def do_cross_val(train, valid, test): # Whether to do cross-validation
-    """
-    Perform k-fold cross validation, as suggested in the 3D U-Net paper. For each fold, this needs to be run again.
-    Note: **This is left as an extension and it was not performed as it would be very time-consuming. **
-    TODO: continue the func for implementation
-    :param train:
-    :param valid:
-    :param test:
-    :return:
-    """
-    data_total = train + valid + test
-    K_FOLD = 3
-    VALID_FRAC = 0.25 # fraction of the training set used as validation set
-    CURRENT_FOLD = 0  # need to be set to: 0, 1, ... K_FOLD-1
-
-    val_split = len(data_total)/K_FOLD
-    val_idx = CURRENT_FOLD*val_split
-    train = data_total[:val_idx] + data_total[val_idx+val_split:]
-    valid = train[:int(len(train)*VALID_FRAC)]
-    train = train[int(len(train)*VALID_FRAC):]
-    test = data_total[val_idx:val_idx+val_split]
-    data_total = []
 
 def show_class_frequency(train):
+    '''
+    showing the frequencies of each class for the weighted loss
+    :param train:
+    :return:
+    '''
     class_freq = {0: 0, 1: 0, 2: 0}
     for i in range(len(train)):
         for j in range(train[i][1].shape[2]):
@@ -261,6 +181,13 @@ def show_class_frequency(train):
 
 
 def apply_histogram_equalisation_to_dataset(train, valid, test):
+    '''
+    applying equalization and saving it in pkl file
+    :param train:
+    :param valid:
+    :param test:
+    :return:
+    '''
 
     hist_equalise(train)  # in-place
     hist_equalise(valid)
@@ -271,20 +198,6 @@ def apply_histogram_equalisation_to_dataset(train, valid, test):
     pickle.dump(file=open('./pickles/heq_valid.pkl', 'wb'), obj=valid)
     pickle.dump(file=open('./pickles/heq_test.pkl', 'wb'), obj=test)
 
-
-def visualise_scaled_scans_and_annotations(dataset):
-    img_id = 15  # Image ID to view
-    x, y = get_scaled_input(dataset[img_id])  # Shows that this works - can check x,y shapes if needed
-    x_swap = swap_axes(x)
-    y_upscale = upscale_segmentation(swap_axes(y), np.shape(swap_axes(x)))
-    multi_slice_viewer(x_swap, y_upscale)  # View scaled images and labels together
-
-    # Compute mean iou with itself & upsampled data
-    x, y = get_scaled_input(dataset[img_id])
-    print('Mean IOU with itself')
-    print(get_mean_iou(y, y, ret_full=True, reswap=True))
-    print('Mean IOU with original labels')
-    print(get_mean_iou(y, dataset[img_id][1], ret_full=True, reswap=False))
 
 
 def main():
@@ -309,7 +222,6 @@ def main():
 
     show_augmentation(train)
 
-    # visualise_scaled_scans_and_annotations(train)
 
 
 
