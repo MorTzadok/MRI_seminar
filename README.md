@@ -1,52 +1,18 @@
-# MRI_seminar - 3D U-Net model for segmentation of prostate structures
+#                                                                  MRI Seminar Project
+#                                            3D U-Net model for segmentation of prostate structures
 
-We based our seminar project on Janko Ondras's work on [Prostate MRI Segmentation]https://github.com/jancio/3D-U-Net-Prostate-Segmentation
-I use the [3D U-Net](https://arxiv.org/pdf/1606.06650.pdf) Given a 3D MRI scan, the aim is to automatically annotate the peripheral zone (PZ) and central gland (CG) regions, as shown here:
+We based our seminar project on Janko Ondras's work on [Prostate MRI Segmentation](https://github.com/jancio/3D-U-Net-Prostate-Segmentation)
+Given a 3D MRI scan, the aim is to automatically annotate the peripheral zone (PZ) and central gland (CG) regions, as shown here:
+
+
 ![image](https://github.com/MorTzadok/MRI_seminar/assets/104845635/34e3f042-acb7-430f-9be3-2323d55498e1)
 
 
 ![](./figs/segmentation_task.png)
 
-*Figure 1:* Segmentation of prostate structures: MRI scan (left) and its annotation (right), where the peripheral zone (PZ) is coloured *dark gray*, central gland (CG) *bright gray*, and the background *black*. 
+We recommend going through the PowerPoint presentation attached for further explanation.
+
+# Regenerating the results 
+The following instructions will help you run the code files to get similar results to ours.
 
 
-## Dataset
-
-| | # 3D scans | Total # scan slices |
-| :--- |  :---:  |  :---:  |
-| Training set | 60 | 1544 |
-| Validation set | 10 | 261 |
-| Test set | 10 | 271 |
-
-
-## Data pre-processing
-
-In the pre-processing stage, I performed histogram equalisation on the input MR images, in order to increase image contrast. As shown in Figure 2, this technique redistributes pixel intensity values to achieve linear cumulative distribution function.
-
-![](./figs/histogram_equalisation.png)
-
-*Figure 2:* Example of the employed histogram equalisation.
-
-
-## Data augmentation
-
-Following the 3D U-Net paper, besides random rotations, scalings, and gray value variations, I also performed a smooth dense deformation field augmentation (also known as elastic distortion/transformation). The same random deformation was applied to a voxel tile and its annotation, as shown in Figure 3. 
-
-All data augmentations were performed in the pre-processing stage as it allowed faster training, although at the expense of higher memory requirements (when compared to the augmentation on-the-fly).
-
-![](./figs/elastic_deformation.png)
-
-*Figure 3:* Example of elastic deformation used for data augmentation.
-
-
-## Results
-
-The best and the worst predictions are shown in Figures 4 and 5 respectively. 
-
-![](./figs/best_prediction.gif)
-
-*Figure 4:* The test scan with the highest score (in terms of Intersection Over Union), i.e. the **best** prediction. 
-
-![](./figs/worst_prediction.gif)
-
-*Figure 5:* The test scan with the lowest score (in terms of Intersection Over Union), i.e. the **worst** prediction. 
