@@ -23,7 +23,8 @@ The pickles folder contains:
  - train.pkl, valid.pkl : train and validation before preprocessing
  - heq_train.pkl, heq_valid.pkl : train and validation after equalization preproccessing
  - train_run.pkl, valid_run.pkl : train and validation after the original data augmentation
- - train_run_aug_cng.pkl, valid_run_aug_cng.pkl : train and validation after our version of data augmentation
+ - train_run_1.pkl, valid_run_1.pkl : train and validation after our version of data augmentation
+ - train_run_aug_cng.pkl, valid_run_aug_cng.pkl : train and validation after a version of data augmentation we didnt use because it had worse results
     
 We saved the preprocessed data in the "pickles" folder for convenient future use.
 If you want to run the preprocessing yourself, you can download the original data from the challenge website into the following directories:
