@@ -83,18 +83,22 @@ in order to run a new train:
    valid_run = pickle.load(file=open('/home/student/Mor_MRI/pickles/valid_run_aug_cng.pkl', 'rb'))
    ```
    need to refer to the right paths:
+
    train/valid_run.pkl for the original augmentations
+
    train/valid_run_1.pkl for the augmentations with intensity shift
+
    train/valid_run_aug_cng.pkl for more changes in augmentations (worse results)
 
-   the function ```pre_process_data``` shoul be in comment
+
+    the function ```pre_process_data``` shoul be in comment
    
-4. set the parameters as you would like and in the parameter ```MODEL_NAME``` write your own name of the training run. this will create inside the tf directory a directory     with the model name containing the dirs:
+5. set the parameters as you would like and in the parameter ```MODEL_NAME``` write your own name of the training run. this will create inside the tf directory a directory     with the model name containing the dirs:
    - net: containing the network meta and index files for each saved epoch, and checkpoint file.
    - res: containing gifs of the best and worst results and the predictions of the inference
    - hist: containing npz files with the history of every saved epoch and images with the plot of loss and iou through the run.
    - log: containing log files of the run.
 
- 5. run ```model.main()```
+ 6. run ```model.main()```
 
    after the run all the results will be in the directories, and the results on the inference will be printed.
