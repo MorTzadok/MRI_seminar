@@ -32,12 +32,43 @@ If you want to run the preprocessing yourself, you can download the original dat
 
 then you should create the enviroment using the enviroment.yml file
 
-'''conda env create --file environment.yml
+```
+conda env create --file environment.yml
+```
+
 and then activate the enviroment
-'''conda activate new_mri2
+
+```
+conda activate new_mri2
+```
+in the file ```data.py```` enable the functions:
+```
+create_data() # to create the train/valid pickles
+apply_histogram_equalisation_to_dataset(train, valid, test) # to apply equalization and create the heq_train/valid pickles
+```
+(there are more functions for visualizing the augmentations and annotations, but they are not mandatory)
 
 
 # Regenerating the results 
 The following instructions will help you run the code files to get similar results to ours.
+if you didn't regenerate the pickled data, create and activate the env:
 
+```
+conda env create --file environment.yml
+conda activate new_mri2
+```
+in the file ```model.py```, in the ```main()``` function there are the parameters for the run.
+in order to run a new train:
 
+1. if you want to regenerate the augmentations:
+   a. in the ```main()``` function, make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
+   b. in the file ```data_augmentation.py``` make sure that functions ```rotate,  grayscale_variation ``` have the original hyperparameters.
+   c. make sure the ```p_intense``` in the function ```get_random_perturbation``` in ```data_augmentation``` is 0.
+3. if you want to regenerate our augmentations with intensity shift:
+   a. in the ```main()``` function, make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
+   b. in the file ```data_augmentation.py``` make sure that functions ```rotate,  grayscale_variation ``` have the original hyperparameters.
+   c. make sure the ```p_intense``` in the function ```get_random_perturbation``` in ```data_augmentation.py``` is 0.6.
+set the parameters as you would like and in the parameter ```MODEL_NAME``` write your own name of the training run. this will create inside the tf directory a directory with the model name containing the dirs:
+- net: containing the network meta and index files for each saved epoch, and checkpoint file.
+- res: containing gifs of the best and worst results and the predictions of the inference
+- hist: containing npz files with the history of every saved epoch and images with the plot of loss 
