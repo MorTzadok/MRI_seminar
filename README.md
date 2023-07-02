@@ -1,7 +1,9 @@
-# MRI_seminar
-# 3D U-Net model for segmentation of prostate structures
+# MRI_seminar - 3D U-Net model for segmentation of prostate structures
 
-In this project, I use the [3D U-Net](https://arxiv.org/pdf/1606.06650.pdf) model to segment prostate structures from the [NCI-ISBI 2013 challenge dataset](https://wiki.cancerimagingarchive.net/display/Public/NCI-ISBI+2013+Challenge+-+Automated+Segmentation+of+Prostate+Structures). Given a 3D MRI scan, the aim is to automatically annotate the peripheral zone (PZ) and central gland (CG) regions, as shown in Figure 1. 
+We based our seminar project on Janko Ondras's work on [Prostate MRI Segmentation]https://github.com/jancio/3D-U-Net-Prostate-Segmentation
+I use the [3D U-Net](https://arxiv.org/pdf/1606.06650.pdf) Given a 3D MRI scan, the aim is to automatically annotate the peripheral zone (PZ) and central gland (CG) regions, as shown here:
+![image](https://github.com/MorTzadok/MRI_seminar/assets/104845635/34e3f042-acb7-430f-9be3-2323d55498e1)
+
 
 ![](./figs/segmentation_task.png)
 
