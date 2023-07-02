@@ -27,6 +27,10 @@ The pickles folder contains:
     
 We saved the preprocessed data in the "pickles" folder for convenient future use.
 If you want to run the preprocessing yourself, you can download the original data from the challenge website into the following directories:
+- NCI-ISBI: containing the DICOMS in directories TRAIN, LEADERBOARD, TEST.
+- NNRD: containing nnrd files in directories Training, Leaderboard, Test.
+
+then you should activate the enviroment using the enviroment.yml file
 
 
 
