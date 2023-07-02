@@ -63,11 +63,11 @@ in order to run a new train:
 
 1. if you want to regenerate the augmentations:
 
-   a. in the ```main()``` function, make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
+   a. in the ```main()``` function in ```model.py```, make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
 
    b. in the file ```data_augmentation.py``` make sure that functions ```rotate,  grayscale_variation ``` have the original hyperparameters.
 
-   c. make sure the ```p_intense``` in the function ```get_random_perturbation``` in ```data_augmentation``` is 0.
+   c. make sure the ```p_intense``` in the function ```get_random_perturbation``` in ```data_augmentation.py``` is 0.
    
 2. if you want to regenerate our augmentations with intensity shift:
 
