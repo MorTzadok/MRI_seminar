@@ -72,11 +72,11 @@ The parameters for the run are located starting in line 616 in the file ```model
 
 In order to run a new train and inference:
 
-Set the parameters as you like and set the parameter ```MODEL_NAME``` to your own name of the training run. this will create inside a tf directory a directory with the model name containing the dirs:
+Set the parameters as you like and set the parameter ```MODEL_NAME``` to your own name of the training run. This will create a tf/<your_run_name> directory containing the dirs:
    - net: containing the network meta and index files for each saved epoch, and checkpoint file.
-   - res: containing gifs of the best and worst results and the predictions of the inference
+   - res: containing gifs of the best and worst results and the predictions of the inference.
    - hist: containing npz files with the history of every saved epoch and images with the plot of loss and iou through the run.
    - log: containing log files of the run.
 
 After you chose the augmentations to generate and the parameters for the training, run ```model.main()```
-After the run all the results will be in the directories, and the results on the inference will be printed.
+At the end of the run all the results will be in the directories, and the results on the inference will be printed.
