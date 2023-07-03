@@ -53,57 +53,63 @@ apply_histogram_equalisation_to_dataset(train, valid, test) # to apply equalizat
 The following instructions will help you run the code files to get similar results to ours.
 ## 1. Downloading the data
 
-download the original data from the [challenge website](https://wiki.cancerimagingarchive.net/display/Public/NCI-ISBI+2013+Challenge+-+Automated+Segmentation+of+Prostate+Structures) into the following directories:
+Download the original data from the [challenge website](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=21267207) following the directions in the *data access* section.
+
+ The data should be extracted in into following directories:
 
 - NCI-ISBI: containing the DICOMS in directories TRAIN, LEADERBOARD, TEST.
 
 - NRRD: containing nnrd files in directories Training, Leaderboard, Test.
+
+## 2. Activating the enviroment
 ```
 conda env create --file environment.yml
 conda activate mri_env
 ```
-in the file ```model.py```, in the ```main()``` function there are the parameters for the run.
-in order to run a new train:
 
-1. if you want to regenerate the augmentations:
+## 3. Creating data files
+In the file ```data.py``` enable the functions:
+```
+create_data() # to create the train/valid pickles
+apply_histogram_equalisation_to_dataset(train, valid, test) # to apply equalization and create the heq_train/valid pickles
+```
+(there are more functions for visualizing the augmentations and annotations, but they are not mandatory)
 
-   a. in the ```main()``` function in ```model.py```, make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
+## 4. Data aumentation
 
-   b. in the file ```data_augmentation.py``` make sure that functions ```rotate,  grayscale_variation ``` have the original hyperparameters.
+In the ```model.py``` file, there is a function called ```pre_process_data``` that we call in the ```main()``` function to create the augmentation for the run.
+You can generate pickle files for both the original augmentations or the updated augmentations with our addition of intensity shift.
 
-   c. make sure the ```p_intense``` in the function ```get_random_perturbation``` in ```data_augmentation.py``` is 0.
+1. if you want to regenerate the  original augmentations:
    
-2. if you want to regenerate our augmentations with intensity shift:
+   a. Make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
 
-   a. in the ```main()``` function, make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
+   b. In ```data_augmentation.py`` make sure the variable ```p_intense``` in the function ```get_random_perturbation```` is 0.
 
-   b. in the file ```data_augmentation.py``` make sure that functions ```rotate,  grayscale_variation ``` have the original hyperparameters.
+   c. Save the augmented data in your chosen name in lines 259, 260 in the function ```pre_process_data``` in ```model.py```
 
-   c. make sure the ```p_intense``` in the function ```get_random_perturbation``` in ```data_augmentation.py``` is 0.6.
+   d. For future uses of the data, you can load the saved pickles with the right names in lines 610, 611 in ```model.py```
 
-3. if you want to use the augmented train and validation set:
-   in ```model.py``` in ```main()``` the lines:
-   ```
-   train_run = pickle.load(file=open('/home/student/Mor_MRI/pickles/train_run_aug_cng.pkl', 'rb'))
-   valid_run = pickle.load(file=open('/home/student/Mor_MRI/pickles/valid_run_aug_cng.pkl', 'rb'))
-   ```
-   need to refer to the right paths:
-
-   train/valid_run.pkl for the original augmentations
-
-   train/valid_run_1.pkl for the augmentations with intensity shift
-
-   train/valid_run_aug_cng.pkl for more changes in augmentations (worse results)
-
-
-    the function ```pre_process_data``` shoul be in comment
    
-5. set the parameters as you would like and in the parameter ```MODEL_NAME``` write your own name of the training run. this will create inside the tf directory a directory     with the model name containing the dirs:
+3. if you want to regenerate our augmentations with intensity shift:
+
+   a. Make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
+
+   b. In ```data_augmentation.py`` make sure the variable ```p_intense``` in the function ```get_random_perturbation```` is 0.6.
+
+   c. For future uses of the data, you can load the saved pickles with the right names in lines 610, 611 in ```model.py```
+
+## Running train and inference
+
+In the file ```model.py```, in the ```main()``` function there are the parameters for the run.
+
+In order to run a new train and inference:
+
+Set the parameters as you would like and in the parameter ```MODEL_NAME``` write your own name of the training run. this will create inside a tf directory a directory     with the model name containing the dirs:
    - net: containing the network meta and index files for each saved epoch, and checkpoint file.
    - res: containing gifs of the best and worst results and the predictions of the inference
    - hist: containing npz files with the history of every saved epoch and images with the plot of loss and iou through the run.
    - log: containing log files of the run.
 
- 6. run ```model.main()```
-
-   after the run all the results will be in the directories, and the results on the inference will be printed.
+After you chose the augmentations to generate and the parameters for the training, run ```model.main()```
+After the run all the results will be in the directories, and the results on the inference will be printed.
