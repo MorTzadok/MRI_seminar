@@ -138,9 +138,9 @@ def create_data():
     data_test_dir = '/home/student/Mor_MRI/NCI-ISBI/TEST/'
 
     # .nrrd annotation files
-    anns_train_dir = '/home/student/Mor_MRI/NNRD/Training/'
-    anns_leader_dir = '/home/student/Mor_MRI/NNRD/Leaderboard/'
-    anns_test_dir = '/home/student/Mor_MRI/NNRD/Test/'
+    anns_train_dir = '/home/student/Mor_MRI/NRRD/Training/'
+    anns_leader_dir = '/home/student/Mor_MRI/NRRD/Leaderboard/'
+    anns_test_dir = '/home/student/Mor_MRI/NRRD/Test/'
 
     train = get_dataset(data_train_dir, anns_train_dir)
     valid = get_dataset(data_leader_dir, anns_leader_dir)
