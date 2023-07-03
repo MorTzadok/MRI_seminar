@@ -18,9 +18,9 @@ We recommend going through the PowerPoint presentation attached for further expl
 The following instructions will help you run the code files to get similar results to ours.
 ## 1. Downloading the data
 
-Download the original data from the [challenge website](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=21267207) following the directions in the *data access* section.
+Download the original data from the [challenge website](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=21267207) following the instructions in the *data access* section.
 
- The data should be extracted in into following directories:
+ The data should be extracted into following directories:
 
 - NCI-ISBI: containing the DICOMS in directories TRAIN, LEADERBOARD, TEST.
 
