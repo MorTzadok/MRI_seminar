@@ -14,41 +14,6 @@ Given a 3D MRI scan, the aim is to automatically annotate the peripheral zone (P
 We recommend going through the PowerPoint presentation attached for further explanation.
 
 
-# The Data
-We used the [NCI-ISBI 2013 challenge Automated Segmentation of Prostate Structures](https://wiki.cancerimagingarchive.net/display/Public/NCI-ISBI+2013+Challenge+-+Automated+Segmentation+of+Prostate+Structures)
-
-### Explanation for the data files of the project:
-
-The pickles folder contains:
- - train.pkl, valid.pkl : train and validation before preprocessing
- - heq_train.pkl, heq_valid.pkl : train and validation after equalization preproccessing
- - train_run.pkl, valid_run.pkl : train and validation after the original data augmentation
- - train_run_1.pkl, valid_run_1.pkl : train and validation after our version of data augmentation
- - train_run_aug_cng.pkl, valid_run_aug_cng.pkl : train and validation after a version of data augmentation we didnt use because it had worse results
-    
-If you want to run the preprocessing yourself, you can download the original data from the challenge website into the following directories:
-- NCI-ISBI: containing the DICOMS in directories TRAIN, LEADERBOARD, TEST.
-- NNRD: containing nnrd files in directories Training, Leaderboard, Test.
-
-then you should create the enviroment using the enviroment.yml file
-
-```
-conda env create --file environment.yml
-```
-
-and then activate the enviroment
-
-```
-conda activate new_mri2
-```
-in the file ```data.py``` enable the functions:
-```
-create_data() # to create the train/valid pickles
-apply_histogram_equalisation_to_dataset(train, valid, test) # to apply equalization and create the heq_train/valid pickles
-```
-(there are more functions for visualizing the augmentations and annotations, but they are not mandatory)
-
-
 # Regenerating the results 
 The following instructions will help you run the code files to get similar results to ours.
 ## 1. Downloading the data
