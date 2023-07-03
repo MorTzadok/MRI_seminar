@@ -33,25 +33,25 @@ conda activate mri_env
 ```
 
 ## 3. Creating data files
-In the file ```data.py``` enable the functions:
+In the file ```data.py``` enable the functions in lines 206, 219:
 ```
 create_data() # to create the train/valid pickles
 apply_histogram_equalisation_to_dataset(train, valid, test) # to apply equalization and create the heq_train/valid pickles
 ```
 (there are more functions for visualizing the augmentations and annotations, but they are not mandatory)
 
-## 4. Data aumentation
+## 4. Data augmentation
 
-In the ```model.py``` file, there is a function called ```pre_process_data``` that we call in the ```main()``` function to create the augmentation for the run.
+In the ```model.py``` file, there is a function called ```pre_process_data``` that we call in the ```main()``` function to create the augmentations before the training to save run time.
 You can generate pickle files for both the original augmentations or the updated augmentations with our addition of intensity shift.
 
 1. if you want to regenerate the  original augmentations:
    
    a. Make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
 
-   b. In ```data_augmentation.py`` make sure the variable ```p_intense``` in the function ```get_random_perturbation``` is 0.
+   b. In ```data_augmentation.py``` make sure the variable ```p_intense``` in the function ```get_random_perturbation``` is 0.
 
-   c. Save the augmented data in your chosen name in lines 259, 260 in the function ```pre_process_data``` in ```model.py```
+   c. Save the augmented data in a name of your choosing (in lines 259, 260) in the function ```pre_process_data``` in ```model.py```
 
    d. For future uses of the data, you can load the saved pickles with the right names in lines 610, 611 in ```model.py```
 
@@ -60,17 +60,19 @@ You can generate pickle files for both the original augmentations or the updated
 
    a. Make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
 
-   b. In ```data_augmentation.py`` make sure the variable ```p_intense``` in the function ```get_random_perturbation```` is 0.6.
+   b. In ```data_augmentation.py``` make sure the variable ```p_intense``` in the function ```get_random_perturbation``` is 0.6.
 
-   c. For future uses of the data, you can load the saved pickles with the right names in lines 610, 611 in ```model.py```
+   c. Save the augmented data in a name of your choosing (in lines 259, 260) in the function ```pre_process_data``` in ```model.py```
+
+   d. For future uses of the data, you can load the saved pickles with the right names in lines 610, 611 in ```model.py```
 
 ## Running train and inference
 
-In the file ```model.py```, in the ```main()``` function there are the parameters for the run.
+The parameters for the run are located starting in line 616 in the file ```model.py```, in the ```main()``` function.
 
 In order to run a new train and inference:
 
-Set the parameters as you would like and in the parameter ```MODEL_NAME``` write your own name of the training run. this will create inside a tf directory a directory     with the model name containing the dirs:
+Set the parameters as you like and set the parameter ```MODEL_NAME``` to your own name of the training run. this will create inside a tf directory a directory with the model name containing the dirs:
    - net: containing the network meta and index files for each saved epoch, and checkpoint file.
    - res: containing gifs of the best and worst results and the predictions of the inference
    - hist: containing npz files with the history of every saved epoch and images with the plot of loss and iou through the run.
