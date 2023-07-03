@@ -26,7 +26,6 @@ The pickles folder contains:
  - train_run_1.pkl, valid_run_1.pkl : train and validation after our version of data augmentation
  - train_run_aug_cng.pkl, valid_run_aug_cng.pkl : train and validation after a version of data augmentation we didnt use because it had worse results
     
-We saved the preprocessed data in the "pickles" folder for convenient future use.
 If you want to run the preprocessing yourself, you can download the original data from the challenge website into the following directories:
 - NCI-ISBI: containing the DICOMS in directories TRAIN, LEADERBOARD, TEST.
 - NNRD: containing nnrd files in directories Training, Leaderboard, Test.
@@ -52,11 +51,16 @@ apply_histogram_equalisation_to_dataset(train, valid, test) # to apply equalizat
 
 # Regenerating the results 
 The following instructions will help you run the code files to get similar results to ours.
-if you didn't regenerate the pickled data, create and activate the env:
+## 1. Downloading the data
 
+download the original data from the [challenge website](https://wiki.cancerimagingarchive.net/display/Public/NCI-ISBI+2013+Challenge+-+Automated+Segmentation+of+Prostate+Structures) into the following directories:
+
+- NCI-ISBI: containing the DICOMS in directories TRAIN, LEADERBOARD, TEST.
+
+- NRRD: containing nnrd files in directories Training, Leaderboard, Test.
 ```
 conda env create --file environment.yml
-conda activate new_mri2
+conda activate mri_env
 ```
 in the file ```model.py```, in the ```main()``` function there are the parameters for the run.
 in order to run a new train:
