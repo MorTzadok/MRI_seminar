@@ -49,7 +49,7 @@ You can generate pickle files for both the original augmentations or the updated
    
    a. Make sure the function ```pre_process_data``` is not in comment, and the ```augment_len=10```.
 
-   b. In ```data_augmentation.py`` make sure the variable ```p_intense``` in the function ```get_random_perturbation```` is 0.
+   b. In ```data_augmentation.py`` make sure the variable ```p_intense``` in the function ```get_random_perturbation``` is 0.
 
    c. Save the augmented data in your chosen name in lines 259, 260 in the function ```pre_process_data``` in ```model.py```
 
