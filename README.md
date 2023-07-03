@@ -66,7 +66,7 @@ You can generate pickle files for both the original augmentations or the updated
 
    d. For future uses of the data, you can load the saved pickles with the right names in lines 610, 611 in ```model.py```
 
-## Running train and inference
+## 5. Running train and inference
 
 The parameters for the run are located starting in line 616 in the file ```model.py```, in the ```main()``` function.
 
