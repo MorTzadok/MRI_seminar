@@ -24,7 +24,7 @@ Download the original data from the [challenge website](https://wiki.cancerimagi
 
 - NCI-ISBI: containing the DICOMS in directories TRAIN, LEADERBOARD, TEST.
 
-- NRRD: containing nnrd files in directories Training, Leaderboard, Test.
+- NRRD: containing nrrd files in directories Training, Leaderboard, Test.
 
 ## 2. Activating the enviroment
 ```
